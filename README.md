@@ -11,12 +11,12 @@ Simulations run on Kantian-HDM replicate psychological behavior (like the fan-ef
 Like the conventional word-embedding models, K-HDM is able to store relations that concepts have with each other and reflect it in terms of similarity differences between concepts. The figure on the left shows similarity between concepts of dog, cat, birds, averaged over 20 simulations based of storage of relationships shown in figure on right.
 
 ![Concept_Mapping](data/images/BasicInformation.png)
-![Similarity Values](data/images/w1similarity.png)
+![Similarity_Values](data/images/w1similarity.png)
 
 ## Numerical Cognition and estimating ratios
 K-HDM model replicates numerical cognition phenomenon where approximate ratios can be derived from memory without explicit storage of some of the quantity information. Below are results from the simulations which encodes instances of broken balls and unbroken balls, and then uses ratio of projection of vector for the concept of Ball to that of Broken and Unbroken to estimate actual algebraic ratios. 
 
-![Numerical Ratio Estimates](data/images/w2_ratio.png)
+![Numerical_Ratio_Estimates](data/images/w2_ratio.PNG)
 
 ## Conjunction Fallacy
 Famously, Tversky and Kahneman (1983)[7] showed that human reasoning around probability often violates the conjunction rule. In an experiment, Tversky and Kahneman presented participants with a story about a hypothetical person, Linda, whose characteristics aligned her towards certain interests (like feminism) more than others (like financial systems), such that:
@@ -29,8 +29,8 @@ P(Linda is a bank teller) < P(Linda is a bank teller ^ Linda is a feminist)
 Tversky and Kahneman’s experiment illustrates the conjunction fallacy, the belief that a conjunction is more probable than the constituent events. While the conjunction fallacy is not compatible with the classical probability theory, Busemeyer et al., 2011 [8]
 argue that the fallacy is explicable through quantum probability theory. K-HDM successfully simulates this phenomenon because its geometric operations naturally implement quantum probability and replicate the results from Tversky’s experiment.
 
-![Understanding Geometric Probability](data/images/linda0.png)
-![Results from Simulations](data/images/linda1.png)
+![Understanding_Geometric_Probability](data/images/linda0.PNG)
+![Results_from_Simulations](data/images/linda1.PNG)
 
 
 Bibliography
