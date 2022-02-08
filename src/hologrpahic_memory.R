@@ -2,21 +2,29 @@
 
 #Initialize holographic memory
 initiate<-function(){
+  
+  #Initialize a list which contains data for each model type
   Model_Data<<-list()
-  for(i in 1:nrow(All_models)){
-    Model_Number=i
-    Parameters=All_models[i,,drop=F]
-    Concepts=list()
-    Cardinals=list()
-    t<-list(Model_Number,Parameters,Concepts,Cardinals)
-    names(t)=c("Model_Number","Parameters","Concepts", "Cardinals")
-    y=list(t)
-    names(y)=paste("Model Number-",i,sep = "")
-    Model_Data<<-append(Model_Data,y)
+  
+  for(i in 1:nrow(models)){
+    
+    Model_Number = i
+    Parameters = models[i,]
+    
+    Concepts = list()
+    Cardinals = list()
+    
+    t <- list(Model_Number, Parameters, Concepts, Cardinals)
+    
+    names(t) = c("Model_Number", "Parameters", "Concepts", "Cardinals")
+    
+    y = list(t)
+    names(y) = paste("Model Number-", i, sep = "")
+    Model_Data <<- append(Model_Data, y)
   }
+  
   #Create a List of all the Cardinals
   for (i in Categories_data$Type){
-    Cat<-i
     add_concept(x = i,Type = "Cardinal" )
   }
 }
