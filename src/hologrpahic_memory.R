@@ -1,12 +1,36 @@
 #Holographic Memory 
 
 #Initialize holographic memory
+<<<<<<< HEAD
 initiate<-function(){
   
   #Initialize a list which contains data for each model type
   Model_Data<<-list()
   
   for(i in 1:nrow(models)){
+=======
+initiate <-
+  function(repeat_store = NA,
+           priority_category = NA,
+           norm_conv = NA ,
+           norm_store = NA ,
+           dimensions) {
+    
+  placeholderholder <<- vect(n = dimensions)
+  
+  # Filter for specified  model parameters
+  models_required = models %>% 
+    filter(if (is.na(repeat_store)) T else Repeatable_Storage == repeat_store) %>% 
+    filter(if (is.na(priority_category)) T else Priority_only == priority_category) %>% 
+    filter(if (is.na(norm_conv)) T else Normalize_conv == norm_conv) %>% 
+    filter(if (is.na(norm_store)) T else Normalize_store == norm_store)
+  
+  #Initialize a list which contains data for each model type
+  
+  Model_Data<<-list()
+  
+  for(i in 1:nrow(models_required)){
+>>>>>>> 7c85158da133bdf4eae37805464ce9ca53fbf3c8
     
     Model_Number = i
     Parameters = models[i,]
@@ -85,7 +109,8 @@ list_concepts<-function(){
 
 # Relate subject and predicate concept with each other and strore the resulting compoite
 ### Relating has defaults for quick testing
-relate_main<-function(Sub,
+
+relate_main <- function(Sub,
                       Pred,
                       Quantity = 1,
                       Quality = 1,
@@ -115,7 +140,9 @@ relate_main<-function(Sub,
     add_concept(x = Pred)
   }
   
-  #Create New Concept from the Relation-----------------------
+  #Create new concept from the relation-----------------------
+  
+  #Check if the concept already exists
   if (!Prop_name %in% names(Model_Data[[1]][["Concepts"]])) {
     add_concept(x = Prop_name)
     Repeated_information = FALSE
@@ -123,19 +150,21 @@ relate_main<-function(Sub,
     Repeated_information = TRUE
   }
   
-  # Encoding information in accorance to various models----------------------
+  # Encoding information in accordance to various models----------------------
   for (i in 1:length(Model_Data)) {
+    
     Model_changes <- list()
-    Parameters <-
-      Model_Data[[i]]$Parameters
+    
+    Parameters <-  Model_Data[[i]]$Parameters
     Model_changes <- append(Model_changes, Parameters)
     
-    #Decide if repeated information should be encoded-------------------------
     Encode_Flag = TRUE
+    # Decide if repeated information should be encoded based on model parameters-------------------------
     if (Repeated_information == T) {
       Encode_Flag = FALSE
+      
       if ("Repeatable_Storage" %in% names(Parameters)) {
-        if (Parameters$Repeatable_Storage == "yes")
+        if (Parameters$Repeatable_Storage == T)
           Encode_Flag = TRUE
       }
     }
@@ -149,8 +178,9 @@ relate_main<-function(Sub,
     Rel_CV <- NA
     Change_PredMV <- NA
     New_pred_MV <- NA
+    
     #Encoding----------------------------
-    if(Encode_Flag==TRUE){
+    if(Encode_Flag == TRUE){
       #Get concept and Cardinal vectors----------------------------------------------------------
       
       sub_EV = Model_Data[[i]][["Concepts"]][[Sub]][["Env_Vector"]]
@@ -168,13 +198,13 @@ relate_main<-function(Sub,
       #Parameter based encoding--------------------------------------------------
       
       if ("Normalize_conv" %in% names(Parameters)) {
-        Normalize_conv = Parameters$Normalize_conv == "yes"
+        Normalize_conv = Parameters$Normalize_conv == T
       } else {
         Normalize_conv = FALSE
       }
       
       if ("Normalize_store" %in% names(Parameters)) {
-        Normalize_store = Parameters$Normalize_store == "yes"
+        Normalize_store = Parameters$Normalize_store == T
       } else {
         Normalize_store = FALSE
       }
@@ -191,7 +221,7 @@ relate_main<-function(Sub,
       )
       
       if ("Priority_only" %in% names(Parameters)) {
-        if (Parameters$Priority_only == "yes") {
+        if (Parameters$Priority_only == T) {
           Rel_CV = convol(x =  Quality_Card_EV, y = Relation_Card_EV, norm = T)
         }
       }
@@ -199,7 +229,7 @@ relate_main<-function(Sub,
       #Convolution and Addition to Subject Memory---------------------------
       Change_SubMV <-
         convol(
-          x = convol(x = Rel_CV, y =  Placeholder, norm = Normalize_conv),
+          x = convol(x = Rel_CV, y =  placeholderholder, norm = Normalize_conv),
           y = pred_EV,
           norm = Normalize_conv
         )
@@ -209,7 +239,7 @@ relate_main<-function(Sub,
       Change_PredMV <-
         convol(
           x = convol(x = Rel_CV, y = sub_EV, norm = Normalize_conv),
-          y = Placeholder,
+          y = placeholderholder,
           norm = Normalize_conv
         )
       New_pred_MV = normalize_vec(pred_MV + Change_PredMV, Disable = !Normalize_store)
@@ -250,7 +280,8 @@ relate_main<-function(Sub,
       normalize_vec(Addition_Cardinal_Mem + Quantity_Card_MV,
                     Disable = !Normalize_store) ->> Model_Data[[i]][["Cardinals"]][[Quantity]][["Mem_Vector"]]
     }
-    #Creating change log for singlre run-------------------------
+    
+    # Creating change log for single run-------------------------
     if (singlerun == T) {
       d <- data.frame(Model = paste("Model", i))
       d$Subject = Sub
@@ -282,7 +313,7 @@ closest_vector_model <-
     Parameters = Model$Parameters
     
     if ("Normalize_conv" %in% names(Parameters)) {
-      Normalize_conv = Parameters$Normalize_conv == "yes"
+      Normalize_conv = Parameters$Normalize_conv == T
     } else {
       Normalize_conv = FALSE
     }
@@ -340,7 +371,7 @@ closest_vector_model <-
         )
         
         if ("Priority_only" %in% names(Parameters)) {
-          if (Parameters$Priority_only == "yes") {
+          if (Parameters$Priority_only == T) {
             Rel_CV = convol(x =  Quality_Card_EV,
                             y = Relation_Card_EV,
                             norm = T)
@@ -353,7 +384,7 @@ closest_vector_model <-
               convol(
                 x = convol(
                   x = Rel_CV,
-                  y = Placeholder,
+                  y = placeholderholder,
                   norm = Normalize_conv
                 ),
                 y = Model[["Concepts"]][[i]][["Env_Vector"]] ,
@@ -368,7 +399,7 @@ closest_vector_model <-
                   y =  Model[["Concepts"]][[i]][["Env_Vector"]],
                   norm = Normalize_conv
                 ),
-                y = Placeholder,
+                y = placeholderholder,
                 norm = Normalize_conv
               )
           }

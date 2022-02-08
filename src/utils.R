@@ -1,3 +1,4 @@
+
 vect <- function(n = dimensions,
                  mean = 0,
                  sd = 1 / n) {
